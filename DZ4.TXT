@@ -1,0 +1,119 @@
+https://github.com/SB44444/LinDockDz4.git
+
+Контейнеризация (семинары)
+Урок 4. Dockerfile и слои
+Задание: необходимо создать Dockerfile, основанный на любом образе (вы в праве выбрать самостоятельно).
+В него необходимо поместить приложение, написанное на любом известном вам языке программирования (Python, Java, C, С#, C++).
+При запуске контейнера должно запускаться самостоятельно написанное приложение.
+
+ВЫПОЛНЕНИЕ:
+
+Проверяем имена контейнером (не могт повторяться)
+1. Создаем дирректорию и файлы
+
+2. Скрипт простой скрипт Python, для проверки работоспособности
+print('Hello from Docker conteiner')
+(Для теста сложный плохо, будет не ясно, что не работает)
+
+3. Записываем инструкцию Dockerfile
+FROM ubuntu:22.10
+
+RUN apt-get update && apt-get upgrade -y
+
+RUN apt-get install python3 -y
+
+ADD py4.py /
+
+CMD ["python3", "./py4.py"]
+
+5. Создаем образ контейнера.
+
+6. Запукаем кнотейнер, появилось приветствие: "Hello from Docker conteiner", 
+значит приложение на Python запущено из контейнера и работает
+
+
+sb@sb-VBox:~$ sudo su
+
+[sudo] пароль для sb: 
+
+root@sb-VBox:/home/sb# docker images
+
+REPOSITORY              TAG       IMAGE ID       CREATED        SIZE
+
+ubuntu                  22.10     692eb4a905c0   3 weeks ago    70.3MB
+
+phpmyadmin/phpmyadmin   latest    e4be0d1537f5   3 months ago   517MB
+
+mysql                   8.0.31    7484689f290f   7 months ago   538MB
+
+root@sb-VBox:/home/sb# mkdir image4
+
+root@sb-VBox:/home/sb# cd /image4
+
+bash: cd: /image4: Нет такого файла или каталога
+
+root@sb-VBox:/home/sb# cd /home/sb/image4
+
+root@sb-VBox:/home/sb/image4# touch py4.py
+
+root@sb-VBox:/home/sb/image4# touch Dockerfile
+
+root@sb-VBox:/home/sb/image4# ls
+
+Dockerfile  py4.py
+
+root@sb-VBox:/home/sb/image4# nano py4.py
+
+root@sb-VBox:/home/sb/image4# nano py4.py
+
+root@sb-VBox:/home/sb/image4# nano Dockerfile
+
+root@sb-VBox:/home/sb/image4# nano py4.py
+
+root@sb-VBox:/home/sb/image4# nano Dockerfile
+
+root@sb-VBox:/home/sb/image4# nano Dockerfile
+
+root@sb-VBox:/home/sb/image4# nano py4.py
+
+root@sb-VBox:/home/sb/image4# docker build -t image4 .
+
+[+] Building 31.2s (9/9) FINISHED                                docker:default
+
+ => [internal] load .dockerignore                                          0.1s
+
+ => => transferring context: 2B                                            0.0s
+
+ => [internal] load build definition from Dockerfile                       0.2s
+
+ => => transferring dockerfile: 170B                                       0.0s
+
+ => [internal] load metadata for docker.io/library/ubuntu:22.10            0.0s
+
+ => [1/4] FROM docker.io/library/ubuntu:22.10                              0.0s
+
+ => [internal] load build context                                          0.1s
+
+ => => transferring context: 70B                                           0.0s
+
+ => [2/4] RUN apt-get update && apt-get upgrade -y                        13.2s
+
+ => [3/4] RUN apt-get install python3 -y                                  16.2s
+
+ => [4/4] ADD py4.py /                                                     0.2s 
+
+ => exporting to image                                                     1.0s 
+
+ => => exporting layers                                                    1.0s 
+
+ => => writing image sha256:b265c6f2c1efd79bd23323fc6adbbe3b29dc505523822  0.0s 
+
+ => => naming to docker.io/library/image4                                  0.0s 
+
+root@sb-VBox:/home/sb/image4# ^C
+
+root@sb-VBox:/home/sb/image4# docker run -v //home/sb/image4/:/dir image4 python3 ./py4.py
+
+Hello from Docker conteiner
+
+root@sb-VBox:/home/sb/image4# 
